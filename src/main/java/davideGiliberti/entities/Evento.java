@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Table(name = "evento")
 public class Evento {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "titolo")
     private String titolo;
@@ -19,14 +19,22 @@ public class Evento {
     @Column(name = "tipo_evento")
     @Enumerated(EnumType.STRING)
     private TipoEvento tipoEvento;
+    @Column(name = "numero_massimo_partecipanti")
+    private int numeroMassimoPartecipanti;
+    @JoinColumn(name = "luogo_id", nullable = false)
+    @ManyToOne
+    private Location location;
+
 
     public Evento() {
     }
 
-    public Evento(String titolo, LocalDate dataEvento, String descrizione) {
+    public Evento(String titolo, LocalDate dataEvento, String descrizione, TipoEvento tipoEvento, int numeroMassimoPartecipanti) {
         this.titolo = titolo;
         this.dataEvento = dataEvento;
         this.descrizione = descrizione;
+        this.tipoEvento = tipoEvento;
+        this.numeroMassimoPartecipanti = numeroMassimoPartecipanti;
     }
 
     public long getId() {
@@ -66,14 +74,23 @@ public class Evento {
         this.tipoEvento = tipoEvento;
     }
 
+    public int getNumeroMassimoPartecipanti() {
+        return numeroMassimoPartecipanti;
+    }
+
+    public void setNumeroMassimoPartecipanti(int numeroMassimoPartecipanti) {
+        this.numeroMassimoPartecipanti = numeroMassimoPartecipanti;
+    }
+
     @Override
     public String toString() {
         return "Evento{" +
                 "id=" + id +
                 ", titolo='" + titolo + '\'' +
-                ", dataEvento='" + dataEvento + '\'' +
+                ", dataEvento=" + dataEvento +
                 ", descrizione='" + descrizione + '\'' +
                 ", tipoEvento=" + tipoEvento +
+                ", numeroMassimoPartecipanti=" + numeroMassimoPartecipanti +
                 '}';
     }
 }
